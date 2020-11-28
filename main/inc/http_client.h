@@ -13,5 +13,4 @@ void http_request(char *url);
 void build_ipstack_url(char *url);
 void build_owm_url(char *url);
 
-
 #endif

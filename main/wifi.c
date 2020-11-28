@@ -33,16 +33,14 @@ extern xSemaphoreHandle wifiSemaphore;
 extern xSemaphoreHandle blinkSemaphore;
 
 static void event_handler(void* arg, esp_event_base_t event_base,
-                                int32_t event_id, void* event_data)
-{
+                                int32_t event_id, void* event_data) {
     if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_START) {
         esp_wifi_connect();
     } else if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_DISCONNECTED) {
         ESP_LOGW(TAG, "Received WIFI_EVENT_STA_DISCONNECTED");
-        
+
         if (s_retry_num == 0) {
             xSemaphoreGive(blinkSemaphore);
-            xSemaphoreTake(wifiSemaphore, portMAX_DELAY);
         }
         if (s_retry_num < WIFI_MAXIMUM_RETRY) {
             vTaskDelay(5000 / portTICK_PERIOD_MS);
@@ -64,7 +62,7 @@ static void event_handler(void* arg, esp_event_base_t event_base,
     }
 }
 
-void wifi_start(){
+void wifi_start() {
 
     s_wifi_event_group = xEventGroupCreate();
 
@@ -110,10 +108,4 @@ void wifi_start(){
     } else {
         ESP_LOGE(TAG, "UNEXPECTED EVENT");
     }
-
-    // ESP_ERROR_CHECK(esp_event_handler_unregister(IP_EVENT, IP_EVENT_STA_GOT_IP, &event_handler));
-    // ESP_ERROR_CHECK(esp_event_handler_unregister(WIFI_EVENT, ESP_EVENT_ANY_ID, &event_handler));
-    // vEventGroupDelete(s_wifi_event_group);
 }
-
-void wifi_stop();

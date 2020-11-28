@@ -20,8 +20,7 @@ int read_pointer = 0;
 
 char url_buf[50];
 
-esp_err_t _http_event_handle(esp_http_client_event_t *evt)
-{
+esp_err_t _http_event_handle(esp_http_client_event_t *evt) {
 
     switch(evt->event_id) {
         case HTTP_EVENT_ERROR:
@@ -70,7 +69,7 @@ esp_err_t _http_event_handle(esp_http_client_event_t *evt)
     return ESP_OK;
 }
 
-void http_request(char *url){
+void http_request(char *url) {
     esp_http_client_config_t config = {
         .url = url,
         .event_handler = _http_event_handle,
@@ -86,7 +85,6 @@ void http_request(char *url){
     }
     esp_http_client_cleanup(client);
 }
-
 
 void build_ipstack_url(char *url) {
     sprintf(
